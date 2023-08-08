@@ -62,7 +62,7 @@ function App() {
 
     }
   }, [responseCount]);
-
+ 
   useEffect(() => {
     localStorage.clear();
     console.log(document.referrer, "document origin link")
