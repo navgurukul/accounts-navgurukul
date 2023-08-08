@@ -4,7 +4,6 @@ import './App.css';
 import jwt_decode from 'jwt-decode';
 import backgroundImg from './assets/background.png'
 import logo from './assets/logo.svg';
-import googleImg from './assets/google.svg'
 import loader from './assets/loader.gif'
 
 function App() {
@@ -16,12 +15,13 @@ function App() {
 
   const handleCallbackResponse = (response) => {
     console.log("encoded data JWT: " + response.credential);
-    setJwtToken(response.credential); // Save the JWT token in the state
+    setLoading(true)
+    setJwtToken(response.credential); 
     // Decode the JWT token to get the user ID
     const decodedToken = jwt_decode(response.credential);
-    const googleUserId = decodedToken.sub; // 'sub' field contains the user ID
-    console.log(decodedToken, "decoded token")
-    console.log("Google User ID: " + googleUserId);
+    // const googleUserId = decodedToken.sub; 
+    // console.log(decodedToken, "decoded token")
+    // console.log("Google User ID: " + googleUserId);
 
     let idToken = response.credential;
     let googleData = { 
@@ -85,7 +85,22 @@ function App() {
       theme: "outline",
       width: 200, size: "large"
     });
+   
   }, []);
+
+  
+  //For gettting response from the apps
+  window.addEventListener("message", function (event) {
+    if (event.origin == "https://sso-login.dkchei85ij0cu.amplifyapp.com") setresponseCount((prev) => prev + 1)
+    if (event.origin == "https://sso-login.d3laxofjrudx9j.amplifyapp.com") setresponseCount((prev) => prev + 1)
+    if (event.origin == "https://partner-dashboard-dev.vercel.app/") setresponseCount((prev) => prev + 1)
+    if (event.origin == "http://localhost:3000/") setresponseCount((prev) => prev + 1)
+    if (event.origin == "http://localhost:5173/") setresponseCount((prev) => prev + 1)
+
+    else {
+      console.warn("Unauthorized application sending response", event.origin);
+    }
+  });
 
 
   return (
