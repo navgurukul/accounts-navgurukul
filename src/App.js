@@ -59,7 +59,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (responseCount >= 3) {
+    if (responseCount >= 4) {
       setTimeout(() => {
         originUrl == 'https://partner-dashboard-dev.vercel.app/' || "http://localhost:3000/" ? window.location.href = `${originUrl}` : window.location.href = `${originUrl}login`
       }, 1000);
@@ -72,7 +72,7 @@ function App() {
     console.log(document.referrer, "document origin link")
     setOriginUrl(document.referrer);
     if (originUrl == 'https://sso-login.d3laxofjrudx9j.amplifyapp.com/') setOriginName("Scratch")
-    else if (originUrl == 'https://partner-dashboard-dev.vercel.app/') setOriginName("Partner Dashboard")
+    else if (originUrl == 'https://partner-dashboard-dev.vercel.app/' || originUrl=="http://localhost:3000/") setOriginName("Partner Dashboard")
     else setOriginName("Meraki")
 
   }, [originUrl]);
