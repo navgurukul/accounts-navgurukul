@@ -89,6 +89,8 @@ function App() {
       theme: "outline",
       width: 200, size: "large"
     });
+
+    document.title = "Accounts Navgurukul";
    
   }, []);
 
