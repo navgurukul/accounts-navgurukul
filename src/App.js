@@ -5,28 +5,36 @@ import jwt_decode from 'jwt-decode';
 import backgroundImg from './assets/background.png'
 import logo from './assets/logo.svg';
 import loader from './assets/loader.gif'
+import { BrowserRouter as Router, Route, useLocation } from 'react-router-dom';
 
+import { useParams } from 'react-router-dom';
 function App() {
 
-  
+
+  const location = useLocation();
   const [jwtToken, setJwtToken] = useState('');
   let [originUrl, setOriginUrl] = useState("");
   const [responseCount, setresponseCount] = useState(0);
   const [loading, setLoading] = useState(false)
   const [originName, setOriginName] = useState('')
+  const[stateParam, setStateParam] = useState("")
+
+  const { q } = useParams();
 
   const handleCallbackResponse = (response) => {
     console.log("encoded data JWT: " + response.credential);
     setLoading(true)
-    setJwtToken(response.credential); 
+    setJwtToken(response.credential);
     // Decode the JWT token to get the user ID
     const decodedToken = jwt_decode(response.credential);
+    console.log(decodedToken)
     // const googleUserId = decodedToken.sub; 
     // console.log(decodedToken, "decoded token")
     // console.log("Google User ID: " + googleUserId);
 
+    console.log(qValue,"statePrama")
     let idToken = response.credential;
-    let googleData = { 
+    let googleData = {
       id: decodedToken.sub,
       name: decodedToken.name,
       imageUrl: decodedToken.picture,
@@ -38,6 +46,7 @@ function App() {
       payload: {
         token: idToken,
         userDetails: googleData,
+        state: qValue,
       },
     };
 
@@ -66,20 +75,31 @@ function App() {
 
     }
   }, [responseCount]);
- 
+
   useEffect(() => {
     localStorage.clear();
-    console.log(document.referrer, "document origin link")
+    // console.log(document.referrer, "document origin link")
     setOriginUrl(document.referrer);
     if (originUrl == 'https://sso-login.d3laxofjrudx9j.amplifyapp.com/') setOriginName("Scratch")
-    else if (originUrl == 'https://partner-dashboard-dev.vercel.app/' || originUrl=="http://localhost:3000/") setOriginName("Partner Dashboard")
+    else if (originUrl == 'https://partner-dashboard-dev.vercel.app/' || originUrl == "http://localhost:3000/") setOriginName("Partner Dashboard")
     else setOriginName("Meraki")
 
   }, [originUrl]);
 
-
-
+let qValue;
   useEffect(() => {
+
+
+    // Use URLSearchParams to parse the query string
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Get the value of the 'q' parameter
+     qValue = urlParams.get("q");
+    setStateParam(JSON.stringify(qValue))
+    // Log the 'q' parameter value
+    console.log("Value of 'q' parameter:", qValue);
+
+
     google?.accounts.id.initialize({
       client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
       callback: handleCallbackResponse,
@@ -91,10 +111,10 @@ function App() {
     });
 
     document.title = "Accounts Navgurukul";
-   
+
   }, []);
 
-  
+
   //For gettting response from the apps
   window.addEventListener("message", function (event) {
     if (event.origin == "https://sso-login.dkchei85ij0cu.amplifyapp.com") setresponseCount((prev) => prev + 1)
@@ -138,17 +158,17 @@ function App() {
       <iframe
         id="dashboardiframe"
         src="https://partner-dashboard-dev.vercel.app/"
-        title="Meraki"
+        title="Dashboard"
       ></iframe>
       <iframe
         id="localiframe"
         src="http://localhost:3000/"
-        title="Meraki"
+        title="Local"
       ></iframe>
       <iframe
         id="partnerlocal"
         src="http://localhost:5173/"
-        title="Meraki"
+        title="ViteLocal"
       ></iframe>
     </>
   );
