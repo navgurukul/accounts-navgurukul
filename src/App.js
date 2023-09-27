@@ -17,7 +17,7 @@ function App() {
   const [responseCount, setresponseCount] = useState(0);
   const [loading, setLoading] = useState(false)
   const [originName, setOriginName] = useState('')
-  const[stateParam, setStateParam] = useState("")
+  const [stateParam, setStateParam] = useState("")
 
   const { q } = useParams();
 
@@ -32,7 +32,7 @@ function App() {
     // console.log(decodedToken, "decoded token")
     // console.log("Google User ID: " + googleUserId);
 
-    console.log(qValue,"statePrama")
+    console.log(qValue, "statePrama")
     let idToken = response.credential;
     let googleData = {
       id: decodedToken.sub,
@@ -77,7 +77,7 @@ function App() {
   }, [responseCount]);
 
   useEffect(() => {
-    localStorage.clear();
+    // localStorage.clear();
     // console.log(document.referrer, "document origin link")
     setOriginUrl(document.referrer);
     if (originUrl == 'https://sso-login.d3laxofjrudx9j.amplifyapp.com/') setOriginName("Scratch")
@@ -86,15 +86,12 @@ function App() {
 
   }, [originUrl]);
 
-let qValue;
+  let qValue;
   useEffect(() => {
-
-
-    // Use URLSearchParams to parse the query string
     const urlParams = new URLSearchParams(window.location.search);
 
     // Get the value of the 'q' parameter
-     qValue = urlParams.get("q");
+    qValue = urlParams.get("q");
     setStateParam(JSON.stringify(qValue))
     // Log the 'q' parameter value
     console.log("Value of 'q' parameter:", qValue);
