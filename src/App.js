@@ -72,7 +72,7 @@ function App() {
       console.log("responseCount", responseCount)
       setTimeout(() => {
         // originUrl == 'https://partner-dashboard-dev.vercel.app/' || "http://localhost:3000/" ? window.location.href = `${originUrl}` : window.location.href = `${originUrl}login`
-        window.location.href = `${originUrl}`
+        // window.location.href = `${originUrl}`
       }, 1000);
 
     }
