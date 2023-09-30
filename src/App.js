@@ -117,7 +117,7 @@ function App() {
   window.addEventListener("message", function (event) {
     if (event.origin == "https://sso-login.dkchei85ij0cu.amplifyapp.com") setresponseCount((prev) => prev + 1)
     if (event.origin == "https://sso-login.d3laxofjrudx9j.amplifyapp.com") setresponseCount((prev) => prev + 1)
-    if (event.origin == "https://partner-dashboard-dev.vercel.app/") setresponseCount((prev) => prev + 1)
+    if (event.origin == "https://partner-dashboard-dev.vercel.app") setresponseCount((prev) => prev + 1)
     if (event.origin == "http://localhost:3000/") setresponseCount((prev) => prev + 1)
     if (event.origin == "http://localhost:5173/") setresponseCount((prev) => prev + 1)
 
