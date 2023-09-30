@@ -68,7 +68,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (responseCount >= 3) {
+    if (responseCount >= 4) {
       setTimeout(() => {
         originUrl == 'https://partner-dashboard-dev.vercel.app/' || "http://localhost:3000/" ? window.location.href = `${originUrl}` : window.location.href = `${originUrl}login`
       }, 1000);
@@ -147,11 +147,11 @@ function App() {
         src="https://sso-login.d3laxofjrudx9j.amplifyapp.com"
         title="Scratch"
       ></iframe>
-      {/* <iframe
+      <iframe
         id="merakiiFrame"
         src="https://sso-login.dkchei85ij0cu.amplifyapp.com/"
         title="Meraki"
-      ></iframe> */}
+      ></iframe>
       <iframe
         id="dashboardiframe"
         src="https://partner-dashboard-dev.vercel.app/"
