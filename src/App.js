@@ -61,7 +61,7 @@ function App() {
       return true;
     };
     postMessageToIframe("#scratchiFrame", "https://sso-login.d3laxofjrudx9j.amplifyapp.com/");
-    // postMessageToIframe("#merakiiFrame", "https://sso-login.dkchei85ij0cu.amplifyapp.com/");
+    postMessageToIframe("#merakiiFrame", "https://sso-login.dkchei85ij0cu.amplifyapp.com/");
     postMessageToIframe("#dashboardiframe", "https://partner-dashboard-dev.vercel.app/");
     postMessageToIframe("#localiframe", "http://localhost:3000/");
     postMessageToIframe("#partnerlocal", "http://localhost:5173/");
