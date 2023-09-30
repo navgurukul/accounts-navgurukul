@@ -69,9 +69,10 @@ function App() {
 
   useEffect(() => {
     if (responseCount >= 4) {
-      setTimeout(() => {
-        originUrl == 'https://partner-dashboard-dev.vercel.app/' || "http://localhost:3000/" ? window.location.href = `${originUrl}` : window.location.href = `${originUrl}login`
-      }, 1000);
+      console.log("responseCount", responseCount)
+      // setTimeout(() => {
+      //   originUrl == 'https://partner-dashboard-dev.vercel.app/' || "http://localhost:3000/" ? window.location.href = `${originUrl}` : window.location.href = `${originUrl}login`
+      // }, 1000);
 
     }
   }, [responseCount]);
