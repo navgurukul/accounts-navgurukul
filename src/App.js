@@ -61,14 +61,14 @@ function App() {
       return true;
     };
     postMessageToIframe("#scratchiFrame", "https://sso-login.d3laxofjrudx9j.amplifyapp.com/");
-    // postMessageToIframe("#merakiiFrame", "https://sso-login.dkchei85ij0cu.amplifyapp.com/");
+    postMessageToIframe("#merakiiFrame", "https://sso-login.dkchei85ij0cu.amplifyapp.com/");
     postMessageToIframe("#dashboardiframe", "https://partner-dashboard-dev.vercel.app/");
     postMessageToIframe("#localiframe", "http://localhost:3000/");
     postMessageToIframe("#partnerlocal", "http://localhost:5173/");
   }
 
   useEffect(() => {
-    if (responseCount >= 3) {
+    if (responseCount >= 4) {
       setTimeout(() => {
         originUrl == 'https://partner-dashboard-dev.vercel.app/' || "http://localhost:3000/" ? window.location.href = `${originUrl}` : window.location.href = `${originUrl}login`
       }, 1000);
@@ -76,9 +76,8 @@ function App() {
     }
   }, [responseCount]);
 
-  
   useEffect(() => {
-    // localStorage.clear();
+    localStorage.clear();
     // console.log(document.referrer, "document origin link")
     setOriginUrl(document.referrer);
     if (originUrl == 'https://sso-login.d3laxofjrudx9j.amplifyapp.com/') setOriginName("Scratch")
@@ -148,11 +147,11 @@ function App() {
         src="https://sso-login.d3laxofjrudx9j.amplifyapp.com"
         title="Scratch"
       ></iframe>
-      {/* <iframe
+      <iframe
         id="merakiiFrame"
         src="https://sso-login.dkchei85ij0cu.amplifyapp.com/"
         title="Meraki"
-      ></iframe> */}
+      ></iframe>
       <iframe
         id="dashboardiframe"
         src="https://partner-dashboard-dev.vercel.app/"
