@@ -63,7 +63,7 @@ function App() {
     postMessageToIframe("#scratchiFrame", "https://sso-login.d3laxofjrudx9j.amplifyapp.com/");
     // postMessageToIframe("#merakiiFrame", "https://sso-login.dkchei85ij0cu.amplifyapp.com/");
     postMessageToIframe("#dashboardiframe", "https://partner-dashboard-dev.vercel.app/");
-    postMessageToIframe("#localiframe", "http://localhost:3000");
+    postMessageToIframe("#localiframe", "http://localhost:3000/");
     postMessageToIframe("#partnerlocal", "http://localhost:5173/");
   }
 
@@ -72,7 +72,7 @@ function App() {
       console.log("responseCount", responseCount)
       setTimeout(() => {
         // originUrl == 'https://partner-dashboard-dev.vercel.app/' || "http://localhost:3000/" ? window.location.href = `${originUrl}` : window.location.href = `${originUrl}login`
-        window.location.href = `${originUrl}`
+        // window.location.href = `${originUrl}`
       }, 1000);
 
     }
