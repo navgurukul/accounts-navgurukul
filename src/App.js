@@ -60,9 +60,9 @@ function App() {
       window.postMessage(message, targetOrigin);
       return true;
     };
-    postMessageToIframe("#scratchiFrame", "https://sso-login.d3laxofjrudx9j.amplifyapp.com/");
-    postMessageToIframe("#merakiiFrame", "https://sso-login.dkchei85ij0cu.amplifyapp.com/");
-    postMessageToIframe("#dashboardiframe", "https://partner-dashboard-dev.vercel.app/");
+    // postMessageToIframe("#scratchiFrame", "https://sso-login.d3laxofjrudx9j.amplifyapp.com/");
+    // postMessageToIframe("#merakiiFrame", "https://sso-login.dkchei85ij0cu.amplifyapp.com/");
+    // postMessageToIframe("#dashboardiframe", "https://partner-dashboard-dev.vercel.app/");
     postMessageToIframe("#localiframe", "http://localhost:3000/");
     postMessageToIframe("#partnerlocal", "http://localhost:5173/");
   }
@@ -145,7 +145,7 @@ let qValue;
           </div>
         </div>
       }
-      <iframe
+      {/* <iframe
         id="scratchiFrame"
         src="https://sso-login.d3laxofjrudx9j.amplifyapp.com"
         title="Scratch"
@@ -159,7 +159,7 @@ let qValue;
         id="dashboardiframe"
         src="https://partner-dashboard-dev.vercel.app/"
         title="Dashboard"
-      ></iframe>
+      ></iframe> */}
       <iframe
         id="localiframe"
         src="http://localhost:3000/"
