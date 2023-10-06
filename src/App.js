@@ -17,7 +17,7 @@ function App() {
   const [responseCount, setresponseCount] = useState(0);
   const [loading, setLoading] = useState(false)
   const [originName, setOriginName] = useState('')
-  const [stateParam, setStateParam] = useState("")
+  const[stateParam, setStateParam] = useState("")
 
   const { q } = useParams();
 
@@ -32,7 +32,7 @@ function App() {
     // console.log(decodedToken, "decoded token")
     // console.log("Google User ID: " + googleUserId);
 
-    console.log(qValue, "statePrama")
+    console.log(qValue,"statePrama")
     let idToken = response.credential;
     let googleData = {
       id: decodedToken.sub,
@@ -61,7 +61,7 @@ function App() {
       return true;
     };
     postMessageToIframe("#scratchiFrame", "https://sso-login.d3laxofjrudx9j.amplifyapp.com/");
-    // postMessageToIframe("#merakiiFrame", "https://sso-login.dkchei85ij0cu.amplifyapp.com/");
+    postMessageToIframe("#merakiiFrame", "https://sso-login.dkchei85ij0cu.amplifyapp.com/");
     postMessageToIframe("#dashboardiframe", "https://partner-dashboard-dev.vercel.app/");
     postMessageToIframe("#localiframe", "http://localhost:3000/");
     postMessageToIframe("#partnerlocal", "http://localhost:5173/");
@@ -69,10 +69,8 @@ function App() {
 
   useEffect(() => {
     if (responseCount >= 4) {
-      console.log("responseCount", responseCount)
       setTimeout(() => {
-        // originUrl == 'https://partner-dashboard-dev.vercel.app/' || "http://localhost:3000/" ? window.location.href = `${originUrl}` : window.location.href = `${originUrl}login`
-        // window.location.href = `${originUrl}`
+        originUrl == 'https://partner-dashboard-dev.vercel.app/' || "http://localhost:3000/" ? window.location.href = `${originUrl}` : window.location.href = `${originUrl}login`
       }, 1000);
 
     }
@@ -88,12 +86,15 @@ function App() {
 
   }, [originUrl]);
 
-  let qValue;
+let qValue;
   useEffect(() => {
+
+
+    // Use URLSearchParams to parse the query string
     const urlParams = new URLSearchParams(window.location.search);
 
     // Get the value of the 'q' parameter
-    qValue = urlParams.get("q");
+     qValue = urlParams.get("q");
     setStateParam(JSON.stringify(qValue))
     // Log the 'q' parameter value
     console.log("Value of 'q' parameter:", qValue);
@@ -118,7 +119,7 @@ function App() {
   window.addEventListener("message", function (event) {
     if (event.origin == "https://sso-login.dkchei85ij0cu.amplifyapp.com") setresponseCount((prev) => prev + 1)
     if (event.origin == "https://sso-login.d3laxofjrudx9j.amplifyapp.com") setresponseCount((prev) => prev + 1)
-    if (event.origin == "https://partner-dashboard-dev.vercel.app") setresponseCount((prev) => prev + 1)
+    if (event.origin == "https://partner-dashboard-dev.vercel.app/") setresponseCount((prev) => prev + 1)
     if (event.origin == "http://localhost:3000/") setresponseCount((prev) => prev + 1)
     if (event.origin == "http://localhost:5173/") setresponseCount((prev) => prev + 1)
 
@@ -149,11 +150,11 @@ function App() {
         src="https://sso-login.d3laxofjrudx9j.amplifyapp.com"
         title="Scratch"
       ></iframe>
-      {/* <iframe
+      <iframe
         id="merakiiFrame"
         src="https://sso-login.dkchei85ij0cu.amplifyapp.com/"
         title="Meraki"
-      ></iframe> */}
+      ></iframe>
       <iframe
         id="dashboardiframe"
         src="https://partner-dashboard-dev.vercel.app/"
