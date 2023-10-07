@@ -27,7 +27,7 @@ function App() {
     // Decode the JWT token to get the user ID
     const decodedToken = jwt_decode(response.credential);
     console.log(decodedToken)
-    sessionStorage.setItem("token", response.credential)
+    localStorage.setItem("token", response.credential)
 
     console.log(document.referrer , "document referrer")
    
@@ -36,7 +36,7 @@ setTimeout(() => {
 }, 5000);
 
     setTimeout(() => {
-      sessionStorage.removeItem("token")
+      localStorage.removeItem("token")
     }, 5000);
 
   }
@@ -75,9 +75,9 @@ setTimeout(() => {
 
   window.addEventListener('message', event => {
     if (event.origin === 'http://localhost:3000') {
-      // Check if the token is present in sessionStorage
+      // Check if the token is present in localStorage
       console.log("event received at accounts page", event.origin)
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
 
       // Send the token back to localhost:3000
       var response = "Message received at meraki";
