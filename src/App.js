@@ -30,8 +30,10 @@ function App() {
     sessionStorage.setItem("token", response.credential)
 
     console.log(document.referrer , "document referrer")
-    window.location.href = document.referrer;
-
+   
+setTimeout(() => {
+  window.location.href = document.referrer;
+}, 5000);
 
     setTimeout(() => {
       sessionStorage.removeItem("token")
