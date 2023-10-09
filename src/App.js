@@ -7,6 +7,7 @@ import logo from './assets/logo.svg';
 import loader from './assets/loader.gif'
 import { BrowserRouter as Router, Route, useLocation } from 'react-router-dom';
 
+import createHost from "cross-domain-storage/host";
 import { useParams } from 'react-router-dom';
 function App() {
 
@@ -18,6 +19,23 @@ function App() {
   const [originName, setOriginName] = useState('')
   const [stateParam, setStateParam] = useState("")
 
+
+
+  const [storageHost, setStorageHost] = useState(null);
+  useEffect(() => {
+    if (!storageHost) {
+      setStorageHost(
+        createHost([
+          {
+            origin: "http://localhost:3000",
+            allowedMethods: ["get", "set", "remove"]
+          }
+        ])
+      );
+    }
+    // window.addEventListener("message", (m) => console.log(m));
+  }, [storageHost]);
+
   const { q } = useParams();
 
   const handleCallbackResponse = (response) => {
@@ -27,7 +45,7 @@ function App() {
     // Decode the JWT token to get the user ID
     const decodedToken = jwt_decode(response.credential);
     console.log(decodedToken)
-    localStorage.setItem("token", response.credential)
+    localStorage.setItem("AUTH", response.credential)
 
     console.log(document.referrer , "document referrer")
    
@@ -35,9 +53,9 @@ setTimeout(() => {
   window.location.href = document.referrer;
 }, 5000);
 
-    setTimeout(() => {
-      localStorage.removeItem("token")
-    }, 5000);
+    // setTimeout(() => {
+    //   localStorage.removeItem("token")
+    // }, 5000);
 
   }
 
@@ -73,17 +91,17 @@ setTimeout(() => {
   }, []);
 
 
-  window.addEventListener('message', event => {
-    if (event.origin === 'http://localhost:3000') {
-      // Check if the token is present in localStorage
-      console.log("event received at accounts page", event.origin)
-      const token = localStorage.getItem('token');
+  // window.addEventListener('message', event => {
+  //   if (event.origin === 'http://localhost:3000') {
+  //     // Check if the token is present in localStorage
+  //     // console.log("event received at accounts page", event.origin)
+  //     const token = localStorage.getItem('token');
 
-      // Send the token back to localhost:3000
-      var response = "Message received at meraki";
-      event.source.postMessage(token, event.origin);
-    }
-  });
+  //     // Send the token back to localhost:3000
+  //     var response = "Message received at meraki";
+  //     event.source.postMessage(token, event.origin);
+  //   }
+  // });
 
 
   return (
