@@ -20,6 +20,22 @@ function App() {
 
   const { q } = useParams();
 
+  function reverseFirstFiveChars(inputString) {
+    if (inputString.length < 5) {
+      // If the string has less than 5 characters, return it as it is
+      return inputString;
+    }
+
+    // Split the string into an array of characters
+    const charArray = inputString.split('');
+
+    // Reverse the first five characters
+    const reversedChars = charArray.slice(0, 5).reverse();
+
+    // Join the reversed characters with the rest of the string
+    return reversedChars.concat(charArray.slice(5)).join('');
+  }
+
   const handleCallbackResponse = (response) => {
     console.log("encoded data JWT: " + response.credential);
     setLoading(true)
@@ -30,21 +46,13 @@ function App() {
     console.log(decodedToken)
     localStorage.setItem("token", response.credential)
 
-    // Step 1: Convert the input string to ASCII codes
-    const asciiCodes = [];
-    for (let i = 0; i < jwtToken.length; i++) {
-      asciiCodes.push(jwtToken.charCodeAt(i));
-    }
 
-    // Step 2: Increment each ASCII code by 1 if it's not equal to 9
-    const modifiedAsciiCodes = asciiCodes.map(code => (code !== 57 ? code + 1 : code));
+    const reversedString = reverseFirstFiveChars(jwtToken);
 
-    // Step 3: Convert the modified ASCII codes back to a string
-    const modifiedString = String.fromCharCode(...modifiedAsciiCodes);
 
-    console.log("Modified String:", modifiedString);
+    console.log("Modified String:", reversedString);
 
-    window.location.href = document.referrer + "?token=" + modifiedString;
+    window.location.href = document.referrer + "?token=" + reversedString;
     console.log(document.referrer, "document referrer")
   }
 
@@ -66,7 +74,7 @@ function App() {
       localStorage.removeItem("token");
     }
     else if (loggedOutState === "false") {
-     let token =  localStorage.get("token", qValue)
+      let token = localStorage.get("token", qValue)
       window.location.href = document.referrer + "?token=" + token;
     }
 
