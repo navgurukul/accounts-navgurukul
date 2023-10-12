@@ -13,50 +13,39 @@ function App() {
 
 
   const location = useLocation();
-  const [jwtToken, setJwtToken] = useState('');
   let [originUrl, setOriginUrl] = useState("");
   const [loading, setLoading] = useState(false)
   const [originName, setOriginName] = useState('')
   const [stateParam, setStateParam] = useState("")
-
-
-
-  const [storageHost, setStorageHost] = useState(null);
-  useEffect(() => {
-    if (!storageHost) {
-      setStorageHost(
-        createHost([
-          {
-            origin: "http://localhost:3000",
-            allowedMethods: ["get", "set", "remove"]
-          }
-        ])
-      );
-    }
-    // window.addEventListener("message", (m) => console.log(m));
-  }, [storageHost]);
 
   const { q } = useParams();
 
   const handleCallbackResponse = (response) => {
     console.log("encoded data JWT: " + response.credential);
     setLoading(true)
-    setJwtToken(response.credential);
+    let jwtToken = response.credential;
+
     // Decode the JWT token to get the user ID
     const decodedToken = jwt_decode(response.credential);
     console.log(decodedToken)
-    localStorage.setItem("AUTH", response.credential)
+    localStorage.setItem("token", response.credential)
 
-    console.log(document.referrer , "document referrer")
-   
-setTimeout(() => {
-  window.location.href = document.referrer;
-}, 5000);
+    // Step 1: Convert the input string to ASCII codes
+    const asciiCodes = [];
+    for (let i = 0; i < jwtToken.length; i++) {
+      asciiCodes.push(jwtToken.charCodeAt(i));
+    }
 
-    // setTimeout(() => {
-    //   localStorage.removeItem("token")
-    // }, 5000);
+    // Step 2: Increment each ASCII code by 1 if it's not equal to 9
+    const modifiedAsciiCodes = asciiCodes.map(code => (code !== 57 ? code + 1 : code));
 
+    // Step 3: Convert the modified ASCII codes back to a string
+    const modifiedString = String.fromCharCode(...modifiedAsciiCodes);
+
+    console.log("Modified String:", modifiedString);
+
+    window.location.href = document.referrer + "?token=" + modifiedString;
+    console.log(document.referrer, "document referrer")
   }
 
 
@@ -71,6 +60,17 @@ setTimeout(() => {
     // Get the value of the 'q' parameter
     qValue = urlParams.get("q");
     setStateParam(JSON.stringify(qValue))
+
+    let loggedOutState = urlParams.get("loggedOut");
+    if (loggedOutState === "true") {
+      localStorage.removeItem("token");
+    }
+    else if (loggedOutState === "false") {
+     let token =  localStorage.get("token", qValue)
+      window.location.href = document.referrer + "?token=" + token;
+    }
+
+
     // Log the 'q' parameter value
     console.log("Value of 'q' parameter:", qValue);
 
@@ -90,18 +90,6 @@ setTimeout(() => {
 
   }, []);
 
-
-  // window.addEventListener('message', event => {
-  //   if (event.origin === 'http://localhost:3000') {
-  //     // Check if the token is present in localStorage
-  //     // console.log("event received at accounts page", event.origin)
-  //     const token = localStorage.getItem('token');
-
-  //     // Send the token back to localhost:3000
-  //     var response = "Message received at meraki";
-  //     event.source.postMessage(token, event.origin);
-  //   }
-  // });
 
 
   return (
