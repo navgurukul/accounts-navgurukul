@@ -54,6 +54,9 @@ function App() {
 
     window.location.href = document.referrer + "?token=" + reversedString;
     console.log(document.referrer, "document referrer")
+
+
+
   }
 
 
@@ -70,13 +73,14 @@ function App() {
     setStateParam(JSON.stringify(qValue))
 
     let loggedOutState = urlParams.get("loggedOut");
-    if (loggedOutState === "true") {
-      localStorage.removeItem("token");
+
+    if(loggedOutState==true){
+      localStorage.removeItem("token")
     }
-    else if (loggedOutState === "false") {
-      let token = localStorage.get("token", qValue)
-      window.location.href = document.referrer + "?token=" + token;
+    else if(loggedOutState==false){
+      window.location.href = document.referrer + "?token=" + localStorage.getItem("token")
     }
+
 
 
     // Log the 'q' parameter value
