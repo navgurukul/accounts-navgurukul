@@ -73,14 +73,20 @@ function App() {
     setStateParam(JSON.stringify(qValue))
 
     let loggedOutState = urlParams.get("loggedOut");
+    let isFirstLogin = urlParams.get("isFirstLogin");
     console.log("first useeffect is running", loggedOutState)
+
+    let storedToken = localStorage.getItem("token");
 
     if (loggedOutState == true) {
       localStorage.removeItem("token")
     }
     else if (loggedOutState == "false") {
       console.log("second useeffect is running")
-      window.location.href = document.referrer + "?token=" + localStorage.getItem("token")
+      window.location.href = document.referrer + "?token=" + reverseFirstFiveChars(storedToken)
+    } else if (isFirstLogin == "true") {
+      console.log("third useeffect is running")
+      window.location.href = document.referrer + "?token=" + reverseFirstFiveChars(storedToken)
     }
 
 
