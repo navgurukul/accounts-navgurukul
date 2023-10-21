@@ -19,7 +19,7 @@ function App() {
   const { q } = useParams();
 
   function reverseLastFiveChars(inputString) {
-    if (inputString.length < 5) {
+    if (inputString?.length < 5) {
         // If the string has less than 5 characters, return it as it is
         return inputString;
     }
@@ -82,7 +82,7 @@ function App() {
     else if (loggedOutState == "false") {
       console.log("second useeffect is running")
       window.location.href = document.referrer + "?token=" + reverseLastFiveChars(storedToken)
-    } else if (isFirstLogin == "true") {
+    } else if (isFirstLogin == "true" && localStorage.getItem("token")) {
       console.log("third useeffect is running")
       window.location.href = document.referrer + "?token=" + reverseLastFiveChars(storedToken)
     }
