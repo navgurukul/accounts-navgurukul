@@ -46,8 +46,6 @@ function App() {
 
   }
 
-
-
   let qValue;
   useEffect(() => {
 
