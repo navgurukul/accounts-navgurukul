@@ -18,21 +18,14 @@ function App() {
 
   const { q } = useParams();
 
-  function reverseLastFiveChars(inputString) {
-    if (inputString?.length < 5) {
-        // If the string has less than 5 characters, return it as it is
-        return inputString;
+ function reverseLastFiveChars(str) {
+    if (str?.length < 5) {
+      return str;
+    } else {
+      const charArray = str?.slice(-5);
+      return str.slice(0, str.length - 5).concat(charArray.split("").reverse().join(""))
     }
-
-    // Split the string into an array of characters
-    const charArray = inputString.split('');
-
-    // Reverse the last five characters
-    const reversedChars = charArray.slice(-5).reverse();
-
-    // Join the reversed characters with the rest of the string
-    return charArray.slice(0, -5).concat(reversedChars).join('');
-}
+  }
 
   const handleCallbackResponse = (response) => {
     console.log("encoded data JWT: " + response.credential);
@@ -43,8 +36,6 @@ function App() {
     const decodedToken = jwt_decode(response.credential);
     console.log(decodedToken)
     localStorage.setItem("token", response.credential)
-
-
     const reversedString = reverseLastFiveChars(jwtToken);
 
 
@@ -52,8 +43,6 @@ function App() {
 
     window.location.href = document.referrer + "?token=" + reversedString;
     console.log(document.referrer, "document referrer")
-
-
 
   }
 
