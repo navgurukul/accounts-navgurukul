@@ -51,6 +51,7 @@ function App() {
 
     console.log(document.referrer, "document referrer")
     setOriginUrl(document.referrer);
+  document.referrer=="https://partner-dashboard-dev.vercel.app/"?setOriginName("Partner Dashboard"):setOriginName("Meraki")
     // Use URLSearchParams to parse the query string
     const urlParams = new URLSearchParams(window.location.search);
 
