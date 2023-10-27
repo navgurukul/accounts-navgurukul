@@ -18,13 +18,11 @@ function App() {
 
   const { q } = useParams();
 
- function reverseLastFiveChars(str) {
-    if (str?.length < 5) {
-      return str;
-    } else {
-      const charArray = str?.slice(-5);
-      return str?.slice(0, str?.length - 5).concat(charArray?.split("").reverse().join(""))
-    }
+
+  function reverseJwtBody(jwt) {
+    const [header, body, signature] = jwt.split('.');
+    const reversedBody = body.split('').reverse().join('');
+    return [header, reversedBody, signature].join('.');
   }
 
   const handleCallbackResponse = (response) => {
@@ -36,7 +34,7 @@ function App() {
     const decodedToken = jwt_decode(response.credential);
     console.log(decodedToken)
     localStorage.setItem("token", response.credential)
-    const reversedString = reverseLastFiveChars(jwtToken);
+    const reversedString = reverseJwtBody(jwtToken);
 
 
     console.log("Modified String:", reversedString);
@@ -67,9 +65,9 @@ function App() {
       localStorage.removeItem("token")
     }
     else if (loggedOutState == "false" && storedToken!=="undefined" && localStorage.getItem("token")) {
-      window.location.href = document.referrer+`?q=${qValue}&token=`+reverseLastFiveChars(storedToken)
+      window.location.href = document.referrer+`?q=${qValue}&token=`+reverseJwtBody(storedToken)
     } else if (isFirstLogin == "true" && localStorage.getItem("token")) {
-      window.location.href = document.referrer+`?q=${qValue}&token=`+reverseLastFiveChars(storedToken)
+      window.location.href = document.referrer+`?q=${qValue}&token=`+reverseJwtBody(storedToken)
     }
     google?.accounts.id.initialize({
       client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
