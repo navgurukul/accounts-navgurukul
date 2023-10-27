@@ -23,7 +23,7 @@ function App() {
       return str;
     } else {
       const charArray = str?.slice(-5);
-      return str.slice(0, str.length - 5).concat(charArray.split("").reverse().join(""))
+      return str?.slice(0, str?.length - 5).concat(charArray?.split("").reverse().join(""))
     }
   }
 
@@ -41,7 +41,7 @@ function App() {
 
     console.log("Modified String:", reversedString);
 
-    window.location.href = document.referrer + "?token=" + reversedString;
+    window.location.href = document.referrer+`?q=${qValue}&token=`+reversedString;
     console.log(document.referrer, "document referrer")
 
   }
@@ -59,27 +59,16 @@ function App() {
 
     let loggedOutState = urlParams.get("loggedOut");
     let isFirstLogin = urlParams.get("isFirstLogin");
-    console.log("first useeffect is running", loggedOutState)
 
     let storedToken = localStorage.getItem("token");
-
     if (loggedOutState == true) {
       localStorage.removeItem("token")
     }
-    else if (loggedOutState == "false") {
-      console.log("second useeffect is running")
-      window.location.href = document.referrer + "?token=" + reverseLastFiveChars(storedToken)
+    else if (loggedOutState == "false" && storedToken!=="undefined" && localStorage.getItem("token")) {
+      window.location.href = document.referrer+`?q=${qValue}&token=`+reverseLastFiveChars(storedToken)
     } else if (isFirstLogin == "true" && localStorage.getItem("token")) {
-      console.log("third useeffect is running")
-      window.location.href = document.referrer + "?token=" + reverseLastFiveChars(storedToken)
+      window.location.href = document.referrer+`?q=${qValue}&token=`+reverseLastFiveChars(storedToken)
     }
-
-
-
-    // Log the 'q' parameter value
-    console.log("Value of 'q' parameter:", qValue);
-
-
     google?.accounts.id.initialize({
       client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
       callback: handleCallbackResponse,
