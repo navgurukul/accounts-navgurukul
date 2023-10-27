@@ -49,6 +49,7 @@ function App() {
   let qValue;
   useEffect(() => {
 
+    console.log(document.referrer, "document referrer")
     setOriginUrl(document.referrer);
     // Use URLSearchParams to parse the query string
     const urlParams = new URLSearchParams(window.location.search);
