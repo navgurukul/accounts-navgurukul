@@ -31,7 +31,7 @@ function App() {
     console.log("encoded data JWT: " + response.credential);
     setLoading(true)
     let jwtToken = response.credential;
-
+    console.log(document.referrer, "document referrer")
     // Decode the JWT token to get the user ID
     const decodedToken = jwt_decode(response.credential);
     console.log(decodedToken)
