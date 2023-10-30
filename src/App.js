@@ -30,7 +30,7 @@ function App() {
     // Decode the JWT token to get the user ID
     const decodedToken = jwt_decode(response.credential);
     console.log(decodedToken);
-    // localStorage.setItem("token", response.credential);
+    localStorage.setItem("token", response.credential);
     const reversedString = reverseJwtBody(jwtToken);
 
     if (document.referrer == "http://localhost:8080/") {
