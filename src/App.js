@@ -51,7 +51,7 @@ function App() {
     localStorage.clear()
     document.referrer == "https://partner-dashboard-dev.vercel.app/"
       ? setOriginName("Partner Dashboard")
-      : setOriginName("Meraki");
+      : setOriginName("C4CA");
     // Use URLSearchParams to parse the query string
     const urlParams = new URLSearchParams(window.location.search);
 
