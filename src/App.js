@@ -48,6 +48,7 @@ function App() {
   useEffect(() => {
     console.log(document.referrer, "document referrer");
     setOriginUrl(document.referrer);
+    localStorage.clear()
     document.referrer == "https://partner-dashboard-dev.vercel.app/"
       ? setOriginName("Partner Dashboard")
       : setOriginName("Meraki");
