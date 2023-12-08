@@ -44,7 +44,7 @@ function App() {
 
           const reversedString = reverseJwtBody(jwtToken);
           console.log(document.referrer, "document referrer");
-          if (document.referrer == "http://localhost:8080/"|| document.referrer == "https://dev.scratch.merakilearn.org/") {
+          if (document.referrer == "http://localhost:8080/"|| document.referrer == "https://sso-login.d3laxofjrudx9j.amplifyapp.com/") {
             window.location.href =
               document.referrer +
               "login/?token=" +
