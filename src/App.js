@@ -6,8 +6,6 @@ import backgroundImg from "./assets/background.png";
 import logo from "./assets/logo.svg";
 import loader from "./assets/loader.gif";
 import { BrowserRouter as Router, Route, useLocation } from "react-router-dom";
-
-import createHost from "cross-domain-storage/host";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 function App() {
@@ -28,7 +26,6 @@ function App() {
   const handleCallbackResponse = async (response) => {
     setLoading(true);
     let jwtToken = response.credential;
-    localStorage.setItem("token", jwtToken);
 
     axios({
       url: `https://merd-api.merakilearn.org/users/auth/google`,
@@ -37,14 +34,17 @@ function App() {
       data: { idToken: jwtToken, mode: "web" },
     }).then((res) => {
       console.log("res", res.data.token);
+
+      localStorage.setItem("token", res.data.token);
       axios
         .get("https://merd-api.merakilearn.org/users/addSessionToken")
         .then((response) => {
-          console.log(response.data, "response data");
-
-          const reversedString = reverseJwtBody(jwtToken);
-          console.log(document.referrer, "document referrer");
-          if (document.referrer == "http://localhost:8080/"|| document.referrer == "https://sso-login.d3laxofjrudx9j.amplifyapp.com/") {
+          localStorage.setItem("loggoutToken", response.data);
+          if (
+            document.referrer == "http://localhost:8080/" ||
+            document.referrer ==
+              "https://sso-login.d3laxofjrudx9j.amplifyapp.com/"
+          ) {
             window.location.href =
               document.referrer +
               "login/?token=" +
@@ -52,29 +52,20 @@ function App() {
               "&loggoutToken=" +
               response.data;
             console.log(document.referrer, "document referrer");
-          }else{
+          } else {
             window.location.href =
-            document.referrer +
-            "?token=" +
-            res.data.token +
-            "&loggoutToken=" +
-            response.data;
-          console.log(document.referrer, "document referrer");
+              document.referrer +
+              "?token=" +
+              reverseJwtBody(res.data.token) +
+              "&loggoutToken=" +
+              response.data;
+            console.log(document.referrer, "document referrer");
           }
         });
     });
-
-    // Decode the JWT token to get the user ID
-    // const decodedToken = jwt_decode(response.credential);
-    // console.log(decodedToken);
-    // localStorage.setItem("token", response.credential);
-
-    // let generatedSessionToken = await
-    // console.log("GeneratedToken:", generatedSessionToken.data);
-    // localStorage.setItem("loggoutToken", generatedSessionToken.data);
   };
 
-  let qValue;
+  let isLoggedOut;
   useEffect(() => {
     async function Logout() {
       let removedSessionToken = await axios.get(
@@ -85,47 +76,47 @@ function App() {
       localStorage.removeItem("token");
       localStorage.removeItem("loggoutToken");
     }
+
     setOriginUrl(document.referrer);
     // Use URLSearchParams to parse the query string
     const urlParams = new URLSearchParams(window.location.search);
 
     // Get the value of the 'q' parameter
-    qValue = urlParams.get("q");
-    setStateParam(JSON.stringify(qValue));
+    isLoggedOut = urlParams.get("loggedOut");
 
-    let loggedOutState = urlParams.get("loggedOut");
-    let isFirstLogin = urlParams.get("isFirstLogin");
-    console.log("first useeffect is running", loggedOutState);
     let storedToken = localStorage.getItem("token");
 
-    // if (loggedOutState == "true") {
-    //   Logout();
-    //   window.location.href = document.referrer;
-    // } else if (document.referrer && storedToken) {
-    //   // TODO: SECURITY ISSUE: document.referrer needs to be checked against whitelist of URLS, DON'T LEAK TOKEN
-    //   window.location.href =
-    //     document.referrer +
-    //     "?token=" +
-    //     reverseJwtBody(storedToken) +
-    //     "&loggoutToken=" +
-    //     localStorage.getItem("loggoutToken");
-    // }
+    if (isLoggedOut == "true") {
+      Logout();
+    }
     if (
-      loggedOutState == "false" &&
+      isLoggedOut == "false" &&
       localStorage.getItem("token") &&
       localStorage.getItem("loggoutToken")
     ) {
-      console.log("second useeffect is running");
-      // window.location.href =
-      //   document.referrer +
-      //   "?token=" +
-      //   reverseJwtBody(
-      //     storedToken + "&loggoutToken=" + localStorage.getItem("loggoutToken")
-      //   );
+      if (
+        document.referrer == "http://localhost:8080/" ||
+        (document.referrer ==
+          "https://sso-login.d3laxofjrudx9j.amplifyapp.com/" &&
+          !isLoggedOut)
+      ) {
+        window.location.href =
+          document.referrer +
+          "login/?token=" +
+          localStorage.getItem("token") +
+          "&loggoutToken=" +
+          localStorage.getItem("loggedOutToken");
+        console.log(document.referrer, "document referrer");
+      } else {
+        window.location.href =
+          document.referrer +
+          "?token=" +
+          reverseJwtBody(localStorage.getItem("token")) +
+          "&loggoutToken=" +
+          localStorage.getItem("loggedOutToken");
+        console.log(document.referrer, "document referrer");
+      }
     }
-
-    // Log the 'q' parameter value
-    console.log("Value of 'q' parameter:", qValue);
 
     google?.accounts.id.initialize({
       client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
