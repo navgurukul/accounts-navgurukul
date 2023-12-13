@@ -39,7 +39,7 @@ function App() {
       axios
         .get("https://merd-api.merakilearn.org/users/addSessionToken")
         .then((response) => {
-          localStorage.setItem("loggoutToken", response.data);
+          localStorage.setItem("loggedOutToken", response.data);
           if (
             document.referrer == "http://localhost:8080/" ||
             document.referrer ==
@@ -49,7 +49,7 @@ function App() {
               document.referrer +
               "login/?token=" +
               res.data.token +
-              "&loggoutToken=" +
+              "&loggedOutToken=" +
               response.data;
             console.log(document.referrer, "document referrer");
           } else {
@@ -57,7 +57,7 @@ function App() {
               document.referrer +
               "?token=" +
               reverseJwtBody(res.data.token) +
-              "&loggoutToken=" +
+              "&loggedOutToken=" +
               response.data;
             console.log(document.referrer, "document referrer");
           }
@@ -65,34 +65,35 @@ function App() {
     });
   };
 
-  let isLoggedOut;
-  useEffect(() => {
-    async function Logout() {
-      let removedSessionToken = await axios.get(
-        `https://merd-api.merakilearn.org/users/removeSessionToken?token=${localStorage.getItem(
-          "loggoutToken"
-        )}`
-      );
-      localStorage.removeItem("token");
-      localStorage.removeItem("loggoutToken");
-    }
+  async function Logout() {
+    console.log("logout function is called ");
+    let removedSessionToken = await axios.get(
+      `https://merd-api.merakilearn.org/users/removeSessionToken?token=${localStorage.getItem(
+        "loggedOutToken"
+      )}`
+    );
+    localStorage.removeItem("token");
+    localStorage.removeItem("loggedOutToken");
+  }
 
+  let isLoggedOut;
+
+  useEffect(() => {
     setOriginUrl(document.referrer);
     // Use URLSearchParams to parse the query string
     const urlParams = new URLSearchParams(window.location.search);
 
     // Get the value of the 'q' parameter
     isLoggedOut = urlParams.get("loggedOut");
-
-    let storedToken = localStorage.getItem("token");
-
-    if (isLoggedOut == "true") {
+    console.log("isLoggedOut", isLoggedOut);
+    console.log("document.referrer", document.referrer);
+    if (isLoggedOut == "true" && document.referrer != "") {
       Logout();
     }
     if (
       isLoggedOut == "false" &&
       localStorage.getItem("token") &&
-      localStorage.getItem("loggoutToken")
+      localStorage.getItem("loggedOutToken")
     ) {
       if (
         document.referrer == "http://localhost:8080/" ||
@@ -104,7 +105,7 @@ function App() {
           document.referrer +
           "login/?token=" +
           localStorage.getItem("token") +
-          "&loggoutToken=" +
+          "&loggedOutToken=" +
           localStorage.getItem("loggedOutToken");
         console.log(document.referrer, "document referrer");
       } else {
@@ -112,7 +113,7 @@ function App() {
           document.referrer +
           "?token=" +
           reverseJwtBody(localStorage.getItem("token")) +
-          "&loggoutToken=" +
+          "&loggedOutToken=" +
           localStorage.getItem("loggedOutToken");
         console.log(document.referrer, "document referrer");
       }
