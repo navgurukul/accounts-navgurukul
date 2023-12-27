@@ -91,7 +91,7 @@ function App() {
       Logout();
     }
     if (
-      isLoggedOut == "false" &&
+     ( isLoggedOut == "false" || isLoggedOut == "null")&&
       localStorage.getItem("token") &&
       localStorage.getItem("loggedOutToken")
     ) {
