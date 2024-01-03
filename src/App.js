@@ -40,34 +40,21 @@ function App() {
         .get("https://merd-api.merakilearn.org/users/addSessionToken")
         .then((response) => {
           localStorage.setItem("loggedOutToken", response.data);
-          if (
-            document.referrer == "http://localhost:8080/" ||
-            document.referrer ==
-              "https://sso-login.d3laxofjrudx9j.amplifyapp.com/"
-          ) {
-            window.location.href =
-              document.referrer +
-              "login/?token=" +
-              res.data.token +
-              "&loggedOutToken=" +
-              response.data;
-            console.log(document.referrer, "document referrer");
-          } else {
-            window.location.href =
-              document.referrer +
-              "?token=" +
-              reverseJwtBody(res.data.token) +
-              "&loggedOutToken=" +
-              response.data;
-            console.log(document.referrer, "document referrer");
-          }
+
+          window.location.href =
+            document.referrer +
+            "?token=" +
+            reverseJwtBody(res.data.token) +
+            "&loggedOutToken=" +
+            response.data;
+          console.log(document.referrer, "document referrer");
         });
     });
   };
 
   async function Logout() {
     console.log("logout function is called ");
-    let removedSessionToken = await axios.get(
+    await axios.get(
       `https://merd-api.merakilearn.org/users/removeSessionToken?token=${localStorage.getItem(
         "loggedOutToken"
       )}`
@@ -91,32 +78,17 @@ function App() {
       Logout();
     }
     if (
-     ( isLoggedOut == "false" || isLoggedOut == "null")&&
+      (isLoggedOut == "false" || isLoggedOut == "null") &&
       localStorage.getItem("token") &&
       localStorage.getItem("loggedOutToken")
     ) {
-      if (
-        document.referrer == "http://localhost:8080/" ||
-        (document.referrer ==
-          "https://sso-login.d3laxofjrudx9j.amplifyapp.com/" &&
-          !isLoggedOut)
-      ) {
-        window.location.href =
-          document.referrer +
-          "login/?token=" +
-          localStorage.getItem("token") +
-          "&loggedOutToken=" +
-          localStorage.getItem("loggedOutToken");
-        console.log(document.referrer, "document referrer");
-      } else {
-        window.location.href =
-          document.referrer +
-          "?token=" +
-          reverseJwtBody(localStorage.getItem("token")) +
-          "&loggedOutToken=" +
-          localStorage.getItem("loggedOutToken");
-        console.log(document.referrer, "document referrer");
-      }
+      window.location.href =
+        document.referrer +
+        "?token=" +
+        reverseJwtBody(localStorage.getItem("token")) +
+        "&loggedOutToken=" +
+        localStorage.getItem("loggedOutToken");
+      console.log(document.referrer, "document referrer");
     }
 
     google?.accounts.id.initialize({
