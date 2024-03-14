@@ -28,7 +28,7 @@ function App() {
     let jwtToken = response.credential;
 
     axios({
-      url: `https://merd-api.merakilearn.org/users/auth/google`,
+      url: `https://api.merakilearn.org/users/auth/google`,
       method: "post",
       headers: { accept: "application/json", Authorization: jwtToken },
       data: { idToken: jwtToken, mode: "web" },
@@ -37,7 +37,7 @@ function App() {
 
       localStorage.setItem("token", res.data.token);
       axios
-        .get("https://merd-api.merakilearn.org/users/addSessionToken")
+        .get("https://api.merakilearn.org/users/addSessionToken")
         .then((response) => {
           localStorage.setItem("loggedOutToken", response.data);
 
@@ -54,11 +54,11 @@ function App() {
 
   async function Logout() {
     console.log("logout function is called ");
-    await axios.get(
-      `https://merd-api.merakilearn.org/users/removeSessionToken?token=${localStorage.getItem(
-        "loggedOutToken"
-      )}`
-    );
+    // await axios.get(
+    //   `https://merd-api.merakilearn.org/users/removeSessionToken?token=${localStorage.getItem(
+    //     "loggedOutToken"
+    //   )}`
+    // );
     localStorage.removeItem("token");
     localStorage.removeItem("loggedOutToken");
   }
@@ -72,8 +72,7 @@ function App() {
 
     // Get the value of the 'q' parameter
     isLoggedOut = urlParams.get("loggedOut");
-    console.log("isLoggedOut", isLoggedOut);
-    console.log("document.referrer", document.referrer);
+
     if (isLoggedOut == "true" && document.referrer != "") {
       Logout();
     }
@@ -88,7 +87,6 @@ function App() {
         reverseJwtBody(localStorage.getItem("token")) +
         "&loggedOutToken=" +
         localStorage.getItem("loggedOutToken");
-      console.log(document.referrer, "document referrer");
     }
 
     google?.accounts.id.initialize({
